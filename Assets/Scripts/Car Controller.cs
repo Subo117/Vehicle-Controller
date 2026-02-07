@@ -4,6 +4,7 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
     [SerializeField] float motorPower = 100f;
+    [SerializeField] float BrakePower = 1000f;
     [SerializeField] float steeringAngle = 30f;
     [SerializeField] Transform carCOMTransform;
 
@@ -64,6 +65,21 @@ public class CarController : MonoBehaviour
         wheelCollider.frontRight.steerAngle = steeringAngle * playerMovementInput.x;
     }
 
+    public void ApplyBrakes(bool isPressed)
+    {
+        if (isPressed) SetBrakeUnit(BrakePower);
+        else SetBrakeUnit(0f);
+
+        Debug.Log("Brakes Applied");
+    }
+
+    void SetBrakeUnit(float unit)
+    {
+        wheelCollider.frontLeft.brakeTorque = unit * 0.7f;
+        wheelCollider.frontRight.brakeTorque = unit * 0.7f;
+        wheelCollider.rearLeft.brakeTorque = unit * 0.3f;
+        wheelCollider.rearRight.brakeTorque = unit * 0.3f;
+    }
 }
 
 [System.Serializable]
