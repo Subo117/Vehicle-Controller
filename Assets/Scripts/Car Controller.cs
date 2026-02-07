@@ -5,7 +5,7 @@ public class CarController : MonoBehaviour
 {
     [SerializeField] float motorPower = 100f;
     [SerializeField] float steeringAngle = 30f;
-    public AnimationCurve steeringCurve;
+    [SerializeField] Transform carCOMTransform;
 
     public WheelColliders wheelCollider;
     public WheelMeshes wheelMeshes;
@@ -19,11 +19,11 @@ public class CarController : MonoBehaviour
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
+        playerRB.centerOfMass = carCOMTransform.localPosition;
     }
 
     private void FixedUpdate()
     {
-        speed = playerRB.linearVelocity.magnitude;
         UpdateWheel();
         ApplyMovement();
         ApplySteering();
