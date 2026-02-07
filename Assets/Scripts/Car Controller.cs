@@ -4,6 +4,7 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
     [SerializeField] float motorPower = 100f;
+    [SerializeField] float steeringAngle = 30f;
     public AnimationCurve steeringCurve;
 
     public WheelColliders wheelCollider;
@@ -53,15 +54,14 @@ public class CarController : MonoBehaviour
 
     void ApplyMovement()
     {
-        wheelCollider.rearLeft.motorTorque = playerMovementInput.z * motorPower;
-        wheelCollider.rearRight.motorTorque = playerMovementInput.z * motorPower;
+        wheelCollider.frontLeft.motorTorque = motorPower * playerMovementInput.z;
+        wheelCollider.frontRight.motorTorque = motorPower * playerMovementInput.z;
     }
 
     void ApplySteering()
     {
-        float steeringAngle = steeringCurve.Evaluate(speed) * playerMovementInput.x;
-        wheelCollider.frontLeft.steerAngle = steeringAngle;
-        wheelCollider.frontRight.steerAngle = steeringAngle;
+        wheelCollider.frontLeft.steerAngle = steeringAngle * playerMovementInput.x;
+        wheelCollider.frontRight.steerAngle = steeringAngle * playerMovementInput.x;
     }
 
 }

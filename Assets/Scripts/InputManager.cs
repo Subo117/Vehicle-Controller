@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
         moveAction.Disable();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         controller.GetPlayerInput(moveAction.Move.ReadValue<Vector2>());
     }
