@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour
     void FixedUpdate()
     {
         controller.GetPlayerInput(moveAction.Move.ReadValue<Vector2>());
-        controller.ApplyBrakes(moveAction.Brake.IsPressed());
+        //controller.ApplyBrakes(moveAction.Brake.IsPressed());
     }
 
 }

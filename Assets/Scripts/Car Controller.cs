@@ -15,7 +15,7 @@ public class CarController : MonoBehaviour
 
     Rigidbody playerRB;
 
-    public float speed;
+    public float currentSpeed;
 
     void Start()
     {
@@ -25,6 +25,8 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currentSpeed = Vector3.Dot(playerRB.linearVelocity, transform.forward);
+
         UpdateWheel();
         ApplyMovement();
         ApplySteering();
@@ -55,8 +57,24 @@ public class CarController : MonoBehaviour
 
     void ApplyMovement()
     {
-        wheelCollider.frontLeft.motorTorque = motorPower * playerMovementInput.z;
-        wheelCollider.frontRight.motorTorque = motorPower * playerMovementInput.z;
+        float input = playerMovementInput.z;
+        Debug.Log(input);
+        if (currentSpeed > 1f && input < 0)
+        {
+            SetBrakeUnit(BrakePower);
+        }
+        else if (currentSpeed < -1f && input > 0)
+        {
+            SetBrakeUnit(BrakePower);
+            
+        }
+        else
+        {
+            SetBrakeUnit(0f);
+
+            wheelCollider.rearLeft.motorTorque = motorPower * input;
+            wheelCollider.rearRight.motorTorque = motorPower * input;
+        }
     }
 
     void ApplySteering()
@@ -65,13 +83,11 @@ public class CarController : MonoBehaviour
         wheelCollider.frontRight.steerAngle = steeringAngle * playerMovementInput.x;
     }
 
-    public void ApplyBrakes(bool isPressed)
-    {
-        if (isPressed) SetBrakeUnit(BrakePower);
-        else SetBrakeUnit(0f);
-
-        Debug.Log("Brakes Applied");
-    }
+    //public void ApplyBrakes(bool isPressed)
+    //{
+    //    if (isPressed) SetBrakeUnit(BrakePower);
+    //    else SetBrakeUnit(0f);
+    //}
 
     void SetBrakeUnit(float unit)
     {
